@@ -9,9 +9,12 @@ import Libreria.demo.entidades.Autor;
 import Libreria.demo.entidades.Editorial;
 import Libreria.demo.entidades.Libro;
 import Libreria.demo.errores.ErrorServicio;
+import Libreria.demo.repositorios.AutorRepositorio;
+import Libreria.demo.repositorios.EditorialRepositorio;
 import Libreria.demo.repositorios.LibroRepositorio;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,15 +24,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class LibroServicio {
 
-    private LibroRepositorio libroRepositorio;
+    @Autowired
+    public LibroRepositorio libroRepositorio;
+    
+    @Autowired
+    public AutorRepositorio autorrepositorio;
+    
+    @Autowired
+    public EditorialRepositorio editorialrepositorio;
 
     @Transactional
-    public void registrarLibro(Double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, Editorial editorial, Autor autor) throws ErrorServicio {
+    public void registrarLibro(double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, String editorialLibro, String autorLibro) throws ErrorServicio {
 
-        if (isbn == null || isbn.isNaN()) {
-
-            throw new ErrorServicio("ISBN del Libro no puede estar Vacío");
+        
+        Editorial editorial1 = editorialrepositorio.getOne(editorialLibro);
+        Autor autor1 = autorrepositorio.getOne(autorLibro);
+        
+        if (editorial1==null){
+            throw new ErrorServicio("No se encontro la editorial");
         }
+
+        if (autor1==null){
+            throw new ErrorServicio("No se encontro la autor1");
+        }        
+//        if (isbn == null || isbn.isNaN()) {
+//
+//            throw new ErrorServicio("ISBN del Libro no puede estar Vacío");
+//        }
         if (titulo == null || titulo.isEmpty()) {
 
             throw new ErrorServicio("Título Libro no puede estar Vacío");
@@ -50,14 +71,14 @@ public class LibroServicio {
 
             throw new ErrorServicio("Ejemplares restantes no puede estar Vacío");
         }
-        if (editorial == null) {
-
-            throw new ErrorServicio("Editorial no puede estar Vacío");
-        }
-        if (autor == null) {
-
-            throw new ErrorServicio("Autor no puede estar Vacío");
-        }
+//        if (editorial == null) {
+//
+//            throw new ErrorServicio("Editorial no puede estar Vacío");
+//        }
+//        if (autor == null) {
+//
+//            throw new ErrorServicio("Autor no puede estar Vacío");
+//        }
 
         Libro libro = new Libro();
 
@@ -68,21 +89,20 @@ public class LibroServicio {
         libro.setEjemplaresPrestados(ejemplaresPrestados);
         libro.setEjemplaresRestantes(ejemplaresRestantes);
         libro.setAlta(true);
-        libro.setEditorial(editorial);
-        libro.setAutor(autor);
+        libro.setEditorial(editorial1);
+        libro.setAutor(autor1);
 
         libroRepositorio.save(libro);
-        
-        
+
     }
-    
+
     @Transactional
-    public void editarLibro(String id, Double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, Editorial editorial, Autor autor)throws ErrorServicio{
-    Optional<Libro> respuesta = libroRepositorio.findById(id);
-        
-        if(respuesta.isPresent()){
+    public void editarLibro(String id, Double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, String editorial_id, Autor autor) throws ErrorServicio {
+        Optional<Libro> respuesta = libroRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
             Libro libro = respuesta.get();
-            if(libro.getAutor().getId().equals(id)){
+            if (libro.getAutor().getId().equals(id)) {
                 libro.setAutor(autor);
                 libro.setEjemplares(ejemplares);
                 libro.setEjemplaresPrestados(ejemplaresPrestados);
@@ -91,29 +111,36 @@ public class LibroServicio {
                 libro.setTitulo(titulo);
                 libro.setAnio(anio);
                 libroRepositorio.save(libro);
-            }else{
+            } else {
                 throw new ErrorServicio("No tiene permisos suficientes para realizar la operación");
             }
-            }else{
-                throw new ErrorServicio("No existe un libro con el identificador indicado");
-            }
-                    
+        } else {
+            throw new ErrorServicio("No existe un libro con el identificador indicado");
         }
-    
+
+    }
+
     @Transactional
-    public void eliminarLibro(String id) throws ErrorServicio{
+    public void eliminarLibro(String id) throws ErrorServicio {
         Optional<Libro> respuesta = libroRepositorio.findById(id);
-        if(respuesta.isPresent()){
+        if (respuesta.isPresent()) {
             Libro libro = respuesta.get();
-            if(libro.getId().equals(id)){
+            if (libro.getId().equals(id)) {
                 libro.setAlta(false);
                 libroRepositorio.save(libro);
-                
+
             }
         } else {
             throw new ErrorServicio("No existe un Libro con el identificador indicado");
-            
+
         }
     }
-    
+
+    public void ListarLibros() {
+        libroRepositorio.findAll();
+    }
+
+    public void ListarLibrosporTitulo(String titulo) {
+        libroRepositorio.buscarPorTitulo(titulo);
+    }
 }

@@ -10,6 +10,7 @@ import Libreria.demo.errores.ErrorServicio;
 import Libreria.demo.repositorios.EditorialRepositorio;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EditorialServicio {
-     private EditorialRepositorio editorialRepositorio;
+     
+    @Autowired
+    private EditorialRepositorio editorialRepositorio;
     
      @Transactional
     public void registrarEditorial(String nombre, Boolean alta)throws ErrorServicio{
@@ -56,4 +59,9 @@ public class EditorialServicio {
     public void ListarEditoriales(){
     editorialRepositorio.findAll();
      }
+    
+            
+    public void ListarEditorialesPorNombre(String nombre){
+    editorialRepositorio.buscarPorNombre(nombre);
+     }        
 }

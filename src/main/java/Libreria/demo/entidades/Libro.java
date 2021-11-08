@@ -6,9 +6,11 @@
 package Libreria.demo.entidades;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -18,6 +20,8 @@ import javax.persistence.OneToOne;
 public class Libro {
 
     @Id
+   @GeneratedValue(generator = "uuid")
+   @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private double isbn;
     private String titulo;
