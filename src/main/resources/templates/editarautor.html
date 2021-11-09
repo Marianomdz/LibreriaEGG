@@ -16,7 +16,7 @@
 </header>
 
 	
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,20 +75,20 @@
 <main>
 	
 	<div id=marco>
-<form th:action="@{/autor/guardar}" method="POST">		
+<form th:action="@{/autor/editarautorguardar}" method="POST">		
   <div id=formulario>
       
-<h2>Crear Autor</h2>
+<h2>Editar Autor</h2>
 
 <p th:if="${error!=null}" th:text="${error}" style="color:red;"> </p>
 <div class="input-group mb-3">
   	  <div class="input-group mb-3">
 		 
   <span class="input-group-text" id="basic-addon1"></span>
-		  
-  <input type="text" class="form-control" name="nombreAutor" placeholder="Nombre Autor" th:value="${nombreautor}" aria-label="Nombre Autor" aria-describedby="basic-addon1">
+  <input type="hidden" name="id" th:value="${id}"/>	  
+  <input type="text" class="form-control" name="nombreAutor" placeholder="Nombre Autor" th:value="${nombre}" aria-label="Nombre Autor" aria-describedby="basic-addon1"/>
 </div>
-    <button class="btn btn-outline-secondary" type=submit id="button-addon2">Crear Autor</button>
+    <button class="btn btn-outline-secondary" type=submit id="button-addon2">Editar Autor</button>
 </div>
 	  
 	  

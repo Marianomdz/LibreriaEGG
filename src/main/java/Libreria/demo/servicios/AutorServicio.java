@@ -3,6 +3,7 @@ package Libreria.demo.servicios;
 import Libreria.demo.entidades.Autor;
 import Libreria.demo.errores.ErrorServicio;
 import Libreria.demo.repositorios.AutorRepositorio;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AutorServicio {
     
     @Transactional
     public void editarAutor(String id, String nombre, Boolean alta)throws ErrorServicio{
-    
+          
         Optional<Autor> respuesta = autorRepositorio.findById(id);
         
         if(respuesta.isPresent()){
@@ -50,14 +51,16 @@ public class AutorServicio {
             autorRepositorio.save(autor);
                                
         } else {
+     
             throw new ErrorServicio("No se ecnuentra el autor con el identificador indicado");
         }
                 
     }     
     
     //@Transactional(readOnly = true)    
-    public void ListarAutores(){
-    autorRepositorio.findAll();
+    public List <Autor> ListarAutores(){
+    return autorRepositorio.findAll();
+    
      }
     
     //@Transactional(readOnly = true)
@@ -65,6 +68,11 @@ public class AutorServicio {
     autorRepositorio.buscarPorNombre(nombre);
      }
     
+
+    public Optional<Autor> BuscarAutoresPorId(String id){
+    return autorRepositorio.findById(id);
+     }
+
     
     public void BajaAutor(String id, String nombre, Boolean alta)throws ErrorServicio{
     

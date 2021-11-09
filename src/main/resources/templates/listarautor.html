@@ -16,7 +16,7 @@
 </header>
 
 	
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,28 +75,33 @@
 <main>
 	
 	<div id=marco>
-<form th:action="@{/autor/guardar}" method="POST">		
-  <div id=formulario>
-      
-<h2>Crear Autor</h2>
 
-<p th:if="${error!=null}" th:text="${error}" style="color:red;"> </p>
-<div class="input-group mb-3">
-  	  <div class="input-group mb-3">
-		 
-  <span class="input-group-text" id="basic-addon1"></span>
-		  
-  <input type="text" class="form-control" name="nombreAutor" placeholder="Nombre Autor" th:value="${nombreautor}" aria-label="Nombre Autor" aria-describedby="basic-addon1">
-</div>
-    <button class="btn btn-outline-secondary" type=submit id="button-addon2">Crear Autor</button>
-</div>
-	  
-	  
-
-
-	</div>
-		
-</form>		
+            <table class="table table-striped table-hover" style="width: 80%; tab">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Nombre</td>
+                    <td>Accion</td>
+                </tr>
+                </thead>
+                
+                <tbody>
+                    
+                    <tr th:each = "autor : ${Autores}">
+                        <td th:text= "${autor.id}"> </td>
+                        <td th:text= "${autor.nombre}"> </td> 
+                        
+                        <td> 
+                        <a th:href="@{/autor/editarautor(id=__${autor.id}__)}"> Editar</a> -
+                        <a th:href="@{/autor/editarautor(id=__${autor.id}__)}"> Eliminar</a>
+                        </td> 
+                    </tr>    
+                    
+                </tbody>
+                
+                
+            </table>
+            
 		</div>
 		
 </main>
