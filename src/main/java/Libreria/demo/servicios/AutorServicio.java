@@ -1,8 +1,10 @@
 package Libreria.demo.servicios;
 
 import Libreria.demo.entidades.Autor;
+import Libreria.demo.entidades.Libro;
 import Libreria.demo.errores.ErrorServicio;
 import Libreria.demo.repositorios.AutorRepositorio;
+import Libreria.demo.repositorios.LibroRepositorio;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -18,6 +20,12 @@ public class AutorServicio {
     
     @Autowired
     private AutorRepositorio autorRepositorio;
+    
+    @Autowired
+    public LibroRepositorio libroRepositorio;
+    
+    @Autowired
+    public LibroServicio libroServicio;
     
     @Transactional
     public void registrarAutor(String nombre, Boolean alta)throws ErrorServicio{
@@ -52,15 +60,20 @@ public class AutorServicio {
                                
         } else {
      
-            throw new ErrorServicio("No se ecnuentra el autor con el identificador indicado");
+            throw new ErrorServicio("No se ecuentra el autor con el identificador indicado");
         }
                 
     }     
     
     //@Transactional(readOnly = true)    
     public List <Autor> ListarAutores(){
-    return autorRepositorio.findAll();
+//    return autorRepositorio.findAll();
+    return autorRepositorio.buscarPorAlta();
     
+     }
+    
+    public void ListarAutoresporAlta(){
+    autorRepositorio.buscarPorAlta();
      }
     
     //@Transactional(readOnly = true)
@@ -75,14 +88,20 @@ public class AutorServicio {
 
     
     public void BajaAutor(String id, String nombre, Boolean alta)throws ErrorServicio{
-    
+    String id_libro;
         Optional<Autor> respuesta = autorRepositorio.findById(id);
-        
+        List<Libro> respuestaLibro = libroRepositorio.buscarPorAutor(id);
         if(respuesta.isPresent()){
             Autor autor = respuesta.get();
             autor.setAlta(false);
             autorRepositorio.save(autor);
-                               
+            for (Libro libro : respuestaLibro) {
+                libro.setAlta(false);
+                id_libro = libro.getId();
+                libroServicio.eliminarLibro(id_libro);
+            }
+            
+            
         } else {
             throw new ErrorServicio("No se ecnuentra el autor con el identificador indicado");
         }

@@ -8,6 +8,7 @@ package Libreria.demo.servicios;
 import Libreria.demo.entidades.Editorial;
 import Libreria.demo.errores.ErrorServicio;
 import Libreria.demo.repositorios.EditorialRepositorio;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +56,20 @@ public class EditorialServicio {
         
     }
     
-    
-    public void ListarEditoriales(){
-    editorialRepositorio.findAll();
+    public void ListarEditorialesporAlta(){
+    editorialRepositorio.buscarPorAlta();
+     }
+    public List <Editorial> ListarEditoriales(){
+    return editorialRepositorio.findAll();
      }
     
             
     public void ListarEditorialesPorNombre(String nombre){
     editorialRepositorio.buscarPorNombre(nombre);
      }        
+    
+    public Optional<Editorial> BuscarEditorialPorId(String id){
+      return  editorialRepositorio.findById(id);
+        
+    }
 }

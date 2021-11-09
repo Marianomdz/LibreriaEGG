@@ -12,6 +12,7 @@ import Libreria.demo.errores.ErrorServicio;
 import Libreria.demo.repositorios.AutorRepositorio;
 import Libreria.demo.repositorios.EditorialRepositorio;
 import Libreria.demo.repositorios.LibroRepositorio;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,4 +144,6 @@ public class LibroServicio {
     public void ListarLibrosporTitulo(String titulo) {
         libroRepositorio.buscarPorTitulo(titulo);
     }
+    
+    
 }
