@@ -98,13 +98,13 @@ public class LibroServicio {
     }
 
     @Transactional
-    public void editarLibro(String id, Double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, String editorial_id, Autor autor) throws ErrorServicio {
+    public void editarLibro(String id, Double isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, Editorial editorial_id, Autor autor_id) throws ErrorServicio {
         Optional<Libro> respuesta = libroRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
             Libro libro = respuesta.get();
             if (libro.getAutor().getId().equals(id)) {
-                libro.setAutor(autor);
+                libro.setAutor(autor_id);
                 libro.setEjemplares(ejemplares);
                 libro.setEjemplaresPrestados(ejemplaresPrestados);
                 libro.setEjemplaresRestantes(ejemplaresRestantes);
@@ -137,13 +137,37 @@ public class LibroServicio {
         }
     }
 
-    public void ListarLibros() {
-        libroRepositorio.findAll();
+    
+    @Transactional
+    public void recuperarLibro(String id) throws ErrorServicio {
+        Optional<Libro> respuesta = libroRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Libro libro = respuesta.get();
+            if (libro.getId().equals(id)) {
+                libro.setAlta(true);
+                libroRepositorio.save(libro);
+
+            }
+        } else {
+            throw new ErrorServicio("No existe un Libro con el identificador indicado");
+
+        }
+    }
+    
+    
+    public List<Libro> ListarLibros() {
+        return libroRepositorio.findAll();
+    }
+    
+    public List<Libro> ListarLibrosAlta() {
+        return libroRepositorio.ListarLibrosAlta();
     }
 
     public void ListarLibrosporTitulo(String titulo) {
         libroRepositorio.buscarPorTitulo(titulo);
     }
     
-    
+     public Optional<Libro> BuscarLibrosPorId(String id){
+    return libroRepositorio.findById(id);
+     }
 }

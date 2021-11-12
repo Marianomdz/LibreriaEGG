@@ -14,3 +14,35 @@
 	text-align: center;
 		
 }
+
+#saludo_login{
+ /* z-index: 0;
+                    position: absolute;
+  border-radius: 10%;
+  background: linear-gradient(0deg, #0d6efc 0%, #00aae4 100%);*/
+  height: 2rem;
+  width: auto;
+  bottom: 0rem;
+  left: 70rem;
+  color: #ccc;
+  font-style: inherit;
+ /*border: 1px solid #00aae4;*/
+
+
+}
+
+#saludo_logout{
+  z-index: 0;
+  /*position: absolute;*/
+  border-radius: 10%;
+  background: linear-gradient(0deg, #0d6efc 0%, #00aae4 100%);
+  height: 2rem;
+  width: auto;
+  bottom: 0rem;
+  left: 70rem;
+  color: #ccc;
+  font-style: inherit;
+ border: 1px solid #00aae4;
+ 
+
+}

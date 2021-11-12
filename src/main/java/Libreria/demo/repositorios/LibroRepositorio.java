@@ -25,4 +25,7 @@ public interface LibroRepositorio extends JpaRepository <Libro, String>{
     @Query("Select c from Libro c where c.editorial.id = :editorial_id")
     List<Libro> buscarPorEditorial(@Param("editorial_id") String editorial_id);
     
+    @Query("Select c from Libro c where c.alta = 1")
+    List<Libro> ListarLibrosAlta();
+    
 }
